@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  title: Finwise API
+  description: |
+    Personal Finance Management System API
+    
+    ## Foundation Phase Endpoints
+    This API provides backend services for the Finwise personal finance platform.
+    
+    ### Features
+    - Health monitoring
+    - Connectivity testing
+    - MongoDB integration
+    
+    ### Base URL
+    - Development: http://localhost:5000
+    - Production: https://your-backend.onrender.com
+    
+  version: 1.0.0
+  contact:
+    name: Finwise Support
+    email: support@finwise.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5000
+    description: Development server
+  - url: https://your-backend.onrender.com
+    description: Production server
+
+tags:
+  - name: Health
+    description: System health monitoring endpoints
+  - name: Test
+    description: Connectivity test endpoints
+
+paths:
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: Check system health
+      description: |
+        Returns the current health status of the backend server.
+        Used by monitoring tools and load balancers.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                success: true
+                status: "OK"
+                timestamp: "2026-06-13T10:30:00.123Z"
+                uptime: 2.345
+                environment: "development"
+                mongoConnected: true
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/test:
+    get:
+      tags:
+        - Test
+      summary: Test API connectivity
+      description: |
+        Simple endpoint to verify frontend-backend communication.
+        Returns a success message if the API is reachable.
+      operationId: testConnection
+      responses:
+        '200':
+          description: API is reachable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+              example:
+                success: true
+                message: "API connection successful"
+                data:
+                  backendStatus: "healthy"
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request succeeded
+          example: true
+        status:
+          type: string
+          description: Health status string
+          enum: ["OK", "DEGRADED", "DOWN"]
+          example: "OK"
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of response
+          example: "2026-06-13T10:30:00.123Z"
+        uptime:
+          type: number
+          description: Server uptime in seconds
+          example: 2.345
+        environment:
+          type: string
+          description: Current environment
+          enum: ["development", "staging", "production"]
+          example: "development"
+        mongoConnected:
+          type: boolean
+          description: MongoDB connection status
+          example: true
+      required:
+        - success
+        - status
+        - timestamp
+        - uptime
+        - environment
+        - mongoConnected
+
+    TestResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request succeeded
+          example: true
+        message:
+          type: string
+          description: Confirmation message
+          example: "API connection successful"
+        data:
+          type: object
+          properties:
+            backendStatus:
+              type: string
+              description: Backend operational status
+              enum: ["healthy", "degraded", "unhealthy"]
+              example: "healthy"
+      required:
+        - success
+        - message
+        - data
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Always false for errors
+          example: false
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Route not found"
+      required:
+        - success
+        - message
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authenticated endpoints (coming in next phase)
