@@ -14,7 +14,7 @@ info:
     
     ### Base URL
     - Development: http://localhost:5000
-    - Production: https://your-backend.onrender.com
+    - Production: https://finwise-backend-k71t.onrender.com
     
   version: 1.0.0
   contact:
@@ -27,7 +27,7 @@ info:
 servers:
   - url: http://localhost:5000
     description: Development server
-  - url: https://your-backend.onrender.com
+  - url: https://finwise-backend-k71t.onrender.com
     description: Production server
 
 tags:
