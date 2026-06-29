@@ -35,6 +35,8 @@ tags:
     description: System health monitoring endpoints
   - name: Test
     description: Connectivity test endpoints
+  - name: Public
+    description: Open landing page endpoints
 
 paths:
   /api/health:
@@ -94,6 +96,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+  /api/public/testimonials:
+    get:
+      tags:
+        - Public
+      summary: Get all testimonials
+      description: Returns all active testimonials for the homepage
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - count
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+
+  /api/public/features:
+    get:
+      tags:
+        - Public
+      summary: Get all features
+      description: Returns all active features for the homepage
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - count
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+
+  /api/public/pricing:
+    get:
+      tags:
+        - Public
+      summary: Get pricing information
+      description: Returns structured dictionary pricing plans
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
 
 components:
   schemas:

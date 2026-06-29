@@ -7,6 +7,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";
+import publicRoutes from './routes/publicRoutes.js';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import YAML from 'yaml';
@@ -72,6 +73,9 @@ app.use("/api/", limiter);
 //5. Body parsing middleware
 app.use(express.json({ limit: "10mb" })); // Limit JSON body to 10MB
 app.use(express.urlencoded({ extended: true, limit: "10mb" })); // Limit URL-encoded body to 10MB
+
+// Public routes
+app.use('/api/public', publicRoutes);
 
 //===================health check ==============================
 app.get("/api/health", (req, res) => {

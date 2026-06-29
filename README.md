@@ -157,3 +157,68 @@ lsof -ti:5000 | xargs kill -9
 * Exponential backoff: 5s, 10s, 20s, 40s, 80s
 
 * Server exits if all retries fail
+
+
+## Phase 2: Homepage Public API Endpoints
+
+### New Models
+- `models/Testimonial.js` - User testimonials
+- `models/Feature.js` - Feature cards for homepage
+
+### New Endpoints
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/public/testimonials` | Get all active testimonials | No |
+| GET | `/api/public/features` | Get all active features | No |
+| GET | `/api/public/pricing` | Get pricing information | No |
+
+### GET /api/public/testimonials
+**Response (200 OK):**
+
+{
+  "success": true,
+  "count": 3,
+  "data": [
+    {
+      "name": "Sarah Johnson",
+      "role": "Freelance Designer",
+      "avatarUrl": "https://ui-avatars.com/api/?name=Sarah+Johnson",
+      "rating": 5,
+      "quote": "Finwise has completely transformed how I manage my finances."
+    }
+  ]
+}
+
+### GET /api/public/features
+
+#### Response (200 OK):
+
+{
+  "success": true,
+  "count": 6,
+  "data": [
+    {
+      "icon": "FiTrendingUp",
+      "title": "Expense Tracking",
+      "description": "Log every transaction in seconds."
+    }
+  ]
+}
+
+### New endpoints to your Postman collection:
+
+**Request: GET /api/public/testimonials**
+- Method: GET
+- URL: `http://localhost:5000/api/public/testimonials`
+- Expected Response: 200 with testimonials array
+
+**Request: GET /api/public/features**
+- Method: GET
+- URL: `http://localhost:5000/api/public/features`
+- Expected Response: 200 with features array
+
+**Request: GET /api/public/pricing**
+- Method: GET
+- URL: `http://localhost:5000/api/public/pricing`
+- Expected Response: 200 with pricing data
